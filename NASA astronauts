@@ -411,4 +411,19 @@ HAVING total_space_walks > 10;
 
 -- (Part 1 of the question) How many hours on average have the astronauts walked in space?
 
-SELECT AVG(Space_Walks_hr) AS average_hours_walked_in_space FROM astronauts HAVING average_hours_walked_in_space;
+SELECT AVG(Space_Walks_hr) AS average_hours_walked_in_space FROM astronauts;
+
+-- (Part 2 of the question) Previously we saw that the average amount of hours the astronauts have walked in space is (rounded up) 8 hours. Which astronauts have walked in space for less than the average and which astronauts have walked in space for more than the average? 
+
+/* CASE */
+SELECT Name,
+CASE
+WHEN Space_Walks_hr = 8 THEN "average"
+WHEN Space_Walks_hr > 8 THEN "above average"
+WHEN Space_Walks_hr < 8 THEN "below average"
+END as "Time_spent_walking_in_space"
+FROM astronauts
+GROUP BY Name;
+
+
+
