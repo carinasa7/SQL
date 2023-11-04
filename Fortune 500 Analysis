@@ -89,3 +89,9 @@ END as 'maternity_leave_weeks_compared_to_Fortune500_Tech_average'
 FROM fortune_companies
 WHERE industry = 'Technology'
 ORDER BY maternity_leave_weeks asc
+
+-- Which Fortune 500 Industry has more than 1 million employees total?
+SELECT industry FROM fortune_companies
+GROUP BY industry
+HAVING SUM(employees) > 1000000
+
