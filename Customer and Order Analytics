@@ -53,5 +53,11 @@ SELECT Product, SUM(Quantity) AS amount_sold FROM BIT_DB.FebSales
 WHERE Product like '%Headphones'
 GROUP BY Product
 
+#11. What was the average amount spent per account in February?
+SELECT ROUND(AVG(Quantity * price),2) AS average_spent_per_account FROM BIT_DB.FebSales
+INNER JOIN BIT_DB.customers
+ON BIT_DB.FebSales.orderID = BIT_DB.customers.order_id
+WHERE price <> 'Price Each'
+
 
 
