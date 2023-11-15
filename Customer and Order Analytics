@@ -48,4 +48,10 @@ GROUP BY location
 HAVING location like '%NY%' AND orders_received > 2
 AND orderID <> 'Order ID' AND orderID <> '';
 
+#10. How many of each type of headphone were sold in February?
+SELECT Product, SUM(Quantity) AS amount_sold FROM BIT_DB.FebSales
+WHERE Product like '%Headphones'
+GROUP BY Product
+
+
 
