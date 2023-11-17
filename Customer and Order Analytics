@@ -59,5 +59,9 @@ INNER JOIN BIT_DB.customers
 ON BIT_DB.FebSales.orderID = BIT_DB.customers.order_id
 WHERE price <> 'Price Each'
 
-
+#12. What was the average quantity of products purchased per account in February?
+SELECT (SUM(Quantity)/COUNT(BIT_DB.customers.acctnum)) FROM BIT_DB.FebSales
+INNER JOIN BIT_DB.customers
+ON BIT_DB.FebSales.orderID = BIT_DB.customers.order_id
+WHERE Quantity <> 'Quantity Ordered' AND length(BIT_DB.customers.order_id) = 6
 
