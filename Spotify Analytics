@@ -1,0 +1,70 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL. 
+
+#First I determined what the average danceability by artist and their Top 50 track(s) was?
+SELECT artist_name, AVG(danceability) FROM BIT_DB.Spotifydata
+GROUP BY artist_name;
+
+#Next I determined who the top 20 artists based on popularity are?
+SELECT artist_name FROM BIT_DB.Spotifydata
+ORDER BY popularity DESC LIMIT 20
+
+#Then I determined what artist released the longest song and which song this was? 
+SELECT artist_name, track_name FROM BIT_DB.Spotifydata
+ORDER BY duration_ms DESC LIMIT 1
+
+#Next I determined what the average danceability is for the 20 most popular songs?
+SELECT AVG(danceability) AS average_danceability_top20 FROM BIT_DB.Spotifydata
+WHERE popularity >= 89
+ORDER BY popularity DESC
+
+#Then I answered the question: What are the top 10 most happy sounding songs that were recorded with a live audience? 
+-- I found that according to documentation a value above 0.8 provides strong likelihood that the track is live
+SELECT track_name FROM BIT_DB.Spotifydata
+WHERE liveness > 0.8
+ORDER BY valence DESC LIMIT 10
+
+#Next I answered the question: Which songs are mostly made of spoken words, which songs contain both music and words and which songs do not have any speach? 
+-- I found that values above 0.66 describe tracks that are probably made entirely of spoken words, values between 0.33 and 0.66 describe tracks that may contain both music and speech and values below 0.33 most likely represent music and other non-speech-like tracks.
+CASE 
+WHEN speechiness > 0.66 THEN "mostly spoken words"
+WHEN speechiness < 0.67 AND speechiness > 0.32 THEN "both music and words"
+ELSE "music and other non-speech-like tracks"
+END as "speechiness_in_tracks" FROM BIT_DB.Spotifydata 
+ORDER BY spoken_words;
+
+#Then I determined what the top 3 most energetic songs are? 
+SELECT track_name FROM BIT_DB.Spotifydata
+ORDER BY energy DESC LIMIT 3
+
+#Lastly I determined which artist(s) has/have the most songs in the top50 Spotify list?
+SELECT artist_name, COUNT(track_name) AS songs_in_top50 FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY songs_in_top50 DESC
